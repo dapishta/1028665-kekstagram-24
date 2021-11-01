@@ -1,7 +1,7 @@
 # Личный проект «Кекстаграм»
 
 * Студент: [Dasha Pishta](https://up.htmlacademy.ru/javascript/24/user/1028665).
-* Наставник: `Неизвестно`.
+* Наставник: `RAMAN LAURYNIUK`.
 
 ---
 
