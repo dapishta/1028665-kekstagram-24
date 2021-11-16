@@ -12,4 +12,8 @@ function isEscPressed (evt) {
   return evt.key === 'Escape';
 }
 
-export {blockBgScroll, unblockBgScroll, isEscPressed};
+function isBackspacePressed (evt) {
+  return evt.key === 'Backspace';
+}
+
+export {blockBgScroll, unblockBgScroll, isEscPressed, isBackspacePressed};
