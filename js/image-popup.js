@@ -35,21 +35,26 @@ function setComment (obj) {
 function openImagePopup (obj) {
   img.src = obj.url;
   likesCount.textContent = obj.likes;
-  commentsCount.textContent = obj.commentsCount;
+  commentsCount.textContent = obj.comments.length;
   description.textContent = obj.description;
 
   commentsList.textContent = '';
 
   if (obj.comments) {
-    obj.comments.forEach((element) => {
-      setComment(element);
-    });
+    if (obj.comments.length >= 5) {
+      obj.comments.splice(0,5).forEach((element) => {
+        setComment(element);
+      });
+    } else {
+      obj.comments.forEach((element) => {
+        setComment(element);
+      });
+      commentsLoader.classList.add('hidden');
+      commentsShownCount.classList.add('hidden');
+    }
   }
 
   popup.classList.remove('hidden');
-
-  commentsShownCount.classList.add('hidden');
-  commentsLoader.classList.add('hidden');
 
   blockBgScroll();
   closeButton.addEventListener('click', onCloseBtnClick);
