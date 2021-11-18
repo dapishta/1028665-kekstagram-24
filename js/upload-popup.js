@@ -1,6 +1,7 @@
 import { blockBgScroll, isEscPressed, unblockBgScroll } from './util.js';
 import { checkHashtags } from './hashtags.js';
 import { FILE_TYPES } from './data.js';
+import { scalePreview, setFilterEffect } from './edit-image.js';
 
 const uploadForm = document.querySelector('#upload-select-image');
 const uploadPopup = uploadForm.querySelector('.img-upload__overlay');
@@ -9,11 +10,13 @@ const uploadPreview = uploadPopup.querySelector('.img-upload__preview img');
 const closeBtn = uploadPopup.querySelector('.img-upload__cancel');
 const descriptionField = uploadPopup.querySelector('.text__description');
 const hashtagsField = uploadPopup.querySelector('.text__hashtags');
+const scaleSmallerBtn = uploadPopup.querySelector('.scale__control--smaller');
+const scaleBiggerBtn = uploadPopup.querySelector('.scale__control--bigger');
+const effectsListInputs = uploadPopup.querySelectorAll('.effects__list input');
 
 
 function onHashtagsFieldInput () {
   const inputValue = hashtagsField.value;
-
   if (inputValue) {
     hashtagsField.setCustomValidity(checkHashtags(inputValue));
     hashtagsField.reportValidity();
@@ -45,6 +48,15 @@ function onUploadFormSubmit (evt) {
 }
 
 
+function onScaleBiggerBtnClick () {
+  scalePreview(true);
+}
+
+function onScaleSmallerBtnClick () {
+  scalePreview(false);
+}
+
+
 // Open popup
 
 function onUploadFileButtonChange () {
@@ -60,11 +72,14 @@ function onUploadFileButtonChange () {
   descriptionField.addEventListener('focus', onFieldFocus);
   descriptionField.addEventListener('blur', onFieldBlur);
 
+  setFilterEffect();
   hashtagsField.addEventListener('focus', onFieldFocus);
   hashtagsField.addEventListener('blur', onFieldBlur);
   hashtagsField.addEventListener('input', onHashtagsFieldInput);
   hashtagsField.addEventListener('keydown', onHashtagsFieldInput);
-
+  scaleBiggerBtn.addEventListener('click', onScaleBiggerBtnClick);
+  scaleSmallerBtn.addEventListener('click', onScaleSmallerBtnClick);
+  effectsListInputs.forEach((element)=> element.addEventListener('click', (evt)=> setFilterEffect(evt.target.id)));
   closeBtn.addEventListener('click', onCloseBtnClick);
   document.addEventListener('keydown', onEscPress);
   uploadPopup.classList.remove('hidden');
