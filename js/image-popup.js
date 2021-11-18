@@ -1,15 +1,18 @@
-import { blockBgScroll, unblockBgScroll } from './util.js';
-import { isEscPressed } from './util.js';
+import { blockBgScroll, unblockBgScroll, isEscPressed } from './util.js';
+import { MAX_COMMENTS_LOAD } from './data.js';
 
 const popup = document.querySelector('.big-picture');
 const img = popup.querySelector('.big-picture__img img');
 const likesCount = popup.querySelector('.likes-count');
 const commentsCount = popup.querySelector('.comments-count');
+const commentsShownCount = popup.querySelector('.comments-shown-count');
 const description = popup.querySelector('.social__caption');
-const commentsShownCount = popup.querySelector('.social__comment-count');
 const commentsLoader = popup.querySelector('.comments-loader');
 const closeButton = popup.querySelector('#picture-cancel');
 const commentsList = popup.querySelector('.social__comments');
+
+let allComments;
+let commentsToShow;
 
 function onCloseBtnClick () {
   closeImagePopup();
@@ -32,6 +35,28 @@ function setComment (obj) {
   commentsList.insertAdjacentHTML('beforeend', comment);
 }
 
+function showComments (array) {
+  if (array.length < MAX_COMMENTS_LOAD) {
+    array.splice(0,array.length).forEach((element) => {
+      setComment(element);
+    });
+    commentsLoader.classList.add('hidden');
+    commentsShownCount.textContent = allComments.length - commentsToShow.length;
+
+  } else {
+    array.splice(0,MAX_COMMENTS_LOAD).forEach((element) => {
+      setComment(element);
+    });
+    commentsShownCount.textContent = allComments.length - commentsToShow.length;
+    commentsLoader.classList.remove('hidden');
+  }
+}
+
+
+function onCommentsLoaderClick () {
+  showComments(commentsToShow);
+}
+
 function openImagePopup (obj) {
   img.src = obj.url;
   likesCount.textContent = obj.likes;
@@ -40,18 +65,11 @@ function openImagePopup (obj) {
 
   commentsList.textContent = '';
 
-  if (obj.comments) {
-    if (obj.comments.length >= 5) {
-      obj.comments.splice(0,5).forEach((element) => {
-        setComment(element);
-      });
-    } else {
-      obj.comments.forEach((element) => {
-        setComment(element);
-      });
-      commentsLoader.classList.add('hidden');
-      commentsShownCount.classList.add('hidden');
-    }
+  commentsToShow = obj.comments.slice();
+  allComments = obj.comments.slice();
+
+  if (commentsToShow) {
+    showComments(commentsToShow);
   }
 
   popup.classList.remove('hidden');
@@ -59,6 +77,8 @@ function openImagePopup (obj) {
   blockBgScroll();
   closeButton.addEventListener('click', onCloseBtnClick);
   document.addEventListener('keydown', onEscPress);
+
+  commentsLoader.addEventListener('click', onCommentsLoaderClick);
 }
 
 function closeImagePopup () {

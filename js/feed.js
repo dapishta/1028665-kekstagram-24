@@ -18,6 +18,7 @@ function getPicture (obj) {
 }
 
 function getFeed (array) {
+  console.log(array)
   array.forEach((element) => {
     getPicture(element);
   });

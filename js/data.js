@@ -1,5 +1,6 @@
 const FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
 const MAX_NUM_HASHTAGS = 5;
+const MAX_COMMENTS_LOAD = 5;
 
 const errorTypeToMessage = {
   tooMuchHashtags: 'Разрешено не больше 5 хештегов',
@@ -8,4 +9,4 @@ const errorTypeToMessage = {
 
 };
 
-export {MAX_NUM_HASHTAGS, errorTypeToMessage, FILE_TYPES};
+export {MAX_NUM_HASHTAGS, errorTypeToMessage, FILE_TYPES, MAX_COMMENTS_LOAD};
